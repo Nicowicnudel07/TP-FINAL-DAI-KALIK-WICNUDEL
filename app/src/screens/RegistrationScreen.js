@@ -1,119 +1,92 @@
 import { useState } from 'react';
-import { KeyboardAvoidingView, Platform, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
 
 export default function RegistrationScreen() {
   const [name, setName] = useState('');
   const [surname, setSurname] = useState('');
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.select({ ios: 'padding', android: undefined })}
-      style={styles.container}
-    >
-      <View style={styles.content}>
-        <Text style={styles.title}>Registro inicial</Text>
-        <Text style={styles.subtitle}>
-          Empezamos con lo básico: completá tu nombre y apellido. Las demás funcionalidades se irán sumando de a poco.
-        </Text>
+    <View style={styles.container}>
+      <Text style={styles.title}>Registro inicial</Text>
+      <Text style={styles.paragraph}>
+        Solo estamos capturando nombre y apellido. La cámara, ubicación, notificaciones y vibración se irán sumando más
+        adelante.
+      </Text>
 
-        <View style={styles.fieldGroup}>
-          <Text style={styles.label}>Nombre</Text>
-          <TextInput
-            placeholder="Ingresá tu nombre"
-            value={name}
-            onChangeText={setName}
-            style={styles.input}
-          />
-        </View>
-
-        <View style={styles.fieldGroup}>
-          <Text style={styles.label}>Apellido</Text>
-          <TextInput
-            placeholder="Ingresá tu apellido"
-            value={surname}
-            onChangeText={setSurname}
-            style={styles.input}
-          />
-        </View>
-
-        <View style={styles.pendingBox}>
-          <Text style={styles.pendingTitle}>Próximos pasos</Text>
-          <Text style={styles.pendingItem}>• Captura con cámara (pendiente)</Text>
-          <Text style={styles.pendingItem}>• Ubicación del usuario (pendiente)</Text>
-          <Text style={styles.pendingItem}>• Notificación + vibración (pendiente)</Text>
-        </View>
-
-        <Pressable style={styles.button} disabled>
-          <Text style={styles.buttonText}>Confirmar (se habilitará más adelante)</Text>
-        </Pressable>
+      <View style={styles.field}>
+        <Text style={styles.label}>Nombre</Text>
+        <TextInput
+          placeholder="Tu nombre"
+          value={name}
+          onChangeText={setName}
+          style={styles.input}
+        />
       </View>
-    </KeyboardAvoidingView>
+
+      <View style={styles.field}>
+        <Text style={styles.label}>Apellido</Text>
+        <TextInput
+          placeholder="Tu apellido"
+          value={surname}
+          onChangeText={setSurname}
+          style={styles.input}
+        />
+      </View>
+
+      <View style={styles.todoBox}>
+        <Text style={styles.todoTitle}>Pendientes</Text>
+        <Text style={styles.todoItem}>• Agregar captura con cámara</Text>
+        <Text style={styles.todoItem}>• Guardar ubicación del usuario</Text>
+        <Text style={styles.todoItem}>• Enviar notificación y vibración de feedback</Text>
+      </View>
+
+      <Button title="Confirmar (todavía no disponible)" onPress={() => {}} disabled />
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f8fafc',
-  },
-  content: {
-    flex: 1,
-    paddingHorizontal: 24,
-    paddingTop: 64,
-    gap: 24,
+    padding: 24,
+    gap: 16,
+    backgroundColor: '#fff',
+    justifyContent: 'flex-start',
   },
   title: {
-    fontSize: 28,
+    fontSize: 24,
     fontWeight: '700',
-    color: '#0f172a',
   },
-  subtitle: {
-    fontSize: 16,
-    color: '#475569',
-    lineHeight: 22,
+  paragraph: {
+    fontSize: 15,
+    color: '#555',
   },
-  fieldGroup: {
-    gap: 8,
+  field: {
+    gap: 6,
   },
   label: {
-    fontSize: 15,
-    color: '#1e293b',
     fontWeight: '600',
   },
   input: {
     borderWidth: 1,
-    borderColor: '#cbd5f5',
-    backgroundColor: '#fff',
-    borderRadius: 8,
-    paddingHorizontal: 16,
-    paddingVertical: Platform.OS === 'ios' ? 14 : 10,
-    fontSize: 16,
-  },
-  pendingBox: {
-    backgroundColor: '#e2e8f0',
-    borderRadius: 12,
-    padding: 16,
-    gap: 6,
-  },
-  pendingTitle: {
-    fontSize: 16,
-    fontWeight: '700',
-    color: '#0f172a',
-  },
-  pendingItem: {
-    fontSize: 14,
-    color: '#475569',
-  },
-  button: {
-    borderRadius: 12,
-    backgroundColor: '#94a3b8',
-    paddingVertical: 16,
-    alignItems: 'center',
-    marginTop: 'auto',
-  },
-  buttonText: {
-    color: '#f1f5f9',
+    borderColor: '#ddd',
+    borderRadius: 6,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
     fontSize: 15,
+  },
+  todoBox: {
+    borderWidth: 1,
+    borderColor: '#eee',
+    borderRadius: 6,
+    padding: 12,
+    gap: 4,
+    backgroundColor: '#f9fafb',
+  },
+  todoTitle: {
     fontWeight: '600',
+  },
+  todoItem: {
+    fontSize: 14,
   },
 });
