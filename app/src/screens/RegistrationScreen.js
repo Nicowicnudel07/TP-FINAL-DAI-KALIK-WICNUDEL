@@ -1,16 +1,60 @@
-import { useState } from 'react';
-import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
+import { useState, useContext } from 'react';
+import { Button, StyleSheet, Text, TextInput, View, Alert } from 'react-native';
+import { LocationContext } from '../context/LocationContext';
 
 export default function RegistrationScreen() {
   const [name, setName] = useState('');
   const [surname, setSurname] = useState('');
+  const [location, setLocation] = useState(null);
+  const { getLocation, isLoading, errorMsg } = useContext(LocationContext);
+
+  const handleGetLocation = async () => {
+    const locationData = await getLocation();
+    if (locationData) {
+      setLocation(locationData);
+      Alert.alert(
+        'Ubicación obtenida',
+        `Latitud: ${locationData.coords.latitude.toFixed(4)}\n` +
+        `Longitud: ${locationData.coords.longitude.toFixed(4)}`
+      );
+    }
+  };
+
+  const handleRegister = () => {
+    if (!name || !surname) {
+      Alert.alert('Error', 'Por favor completa todos los campos');
+      return;
+    }
+    
+    if (!location) {
+      Alert.alert('Error', 'Por favor obtén tu ubicación primero');
+      return;
+    }
+
+    // Aquí iría la lógica de registro
+    Alert.alert(
+      '¡Registro exitoso!',
+      `Nombre: ${name} ${surname}\n` +
+      `Ubicación: ${location.coords.latitude.toFixed(4)}, ${location.coords.longitude.toFixed(4)}`,
+      [
+        {
+          text: 'Aceptar',
+          onPress: () => {
+            // Limpiar formulario después de registro exitoso
+            setName('');
+            setSurname('');
+            setLocation(null);
+          },
+        },
+      ]
+    );
+  };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Registro inicial</Text>
+      <Text style={styles.title}>Registro de Usuario</Text>
       <Text style={styles.paragraph}>
-        Solo estamos capturando nombre y apellido. La cámara, ubicación, notificaciones y vibración se irán sumando más
-        adelante.
+        Completa el formulario para registrarte. Necesitaremos acceso a tu ubicación.
       </Text>
 
       <View style={styles.field}>
@@ -20,6 +64,7 @@ export default function RegistrationScreen() {
           value={name}
           onChangeText={setName}
           style={styles.input}
+          editable={!isLoading}
         />
       </View>
 
@@ -33,14 +78,42 @@ export default function RegistrationScreen() {
         />
       </View>
 
-      <View style={styles.todoBox}>
-        <Text style={styles.todoTitle}>Pendientes</Text>
-        <Text style={styles.todoItem}>• Agregar captura con cámara</Text>
-        <Text style={styles.todoItem}>• Guardar ubicación del usuario</Text>
-        <Text style={styles.todoItem}>• Enviar notificación y vibración de feedback</Text>
+      <View style={styles.locationContainer}>
+        <Text style={styles.label}>Ubicación</Text>
+        <View style={styles.locationButtonContainer}>
+          <Button
+            title={
+              isLoading 
+                ? 'Obteniendo ubicación...' 
+                : location 
+                  ? 'Ubicación obtenida ✓' 
+                  : 'Obtener mi ubicación'
+            }
+            onPress={handleGetLocation}
+            disabled={isLoading}
+            color={location ? '#4CAF50' : '#007AFF'}
+          />
+        </View>
+        {location && (
+          <Text style={styles.locationText}>
+            {location.coords.latitude.toFixed(4)}, {location.coords.longitude.toFixed(4)}
+          </Text>
+        )}
       </View>
 
-      <Button title="Confirmar (todavía no disponible)" onPress={() => {}} disabled />
+      {errorMsg && (
+        <Text style={styles.errorText}>
+          {errorMsg}
+        </Text>
+      )}
+
+      <View style={styles.buttonContainer}>
+        <Button
+          title="Registrarme"
+          onPress={handleRegister}
+          disabled={isLoading || !location}
+        />
+      </View>
     </View>
   );
 }
@@ -48,45 +121,71 @@ export default function RegistrationScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 24,
-    gap: 16,
-    backgroundColor: '#fff',
+    padding: 20,
+    backgroundColor: '#f5f5f5',
+    justifyContent: 'center',
     justifyContent: 'flex-start',
   },
   title: {
-    fontSize: 24,
-    fontWeight: '700',
+    fontSize: 28,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 16,
+    color: '#333',
   },
   paragraph: {
-    fontSize: 15,
-    color: '#555',
+    fontSize: 16,
+    textAlign: 'center',
+    marginBottom: 32,
+    color: '#666',
+    lineHeight: 24,
   },
   field: {
-    gap: 6,
+    marginBottom: 20,
   },
   label: {
-    fontWeight: '600',
+    fontSize: 16,
+    marginBottom: 8,
+    color: '#444',
+    fontWeight: '500',
   },
   input: {
     borderWidth: 1,
     borderColor: '#ddd',
-    borderRadius: 6,
-    paddingHorizontal: 12,
-    paddingVertical: 10,
-    fontSize: 15,
+    borderRadius: 8,
+    padding: 14,
+    fontSize: 16,
+    backgroundColor: '#fff',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 2,
   },
-  todoBox: {
-    borderWidth: 1,
-    borderColor: '#eee',
-    borderRadius: 6,
-    padding: 12,
-    gap: 4,
-    backgroundColor: '#f9fafb',
+  buttonContainer: {
+    marginTop: 20,
+    borderRadius: 8,
+    overflow: 'hidden',
   },
-  todoTitle: {
-    fontWeight: '600',
+  locationContainer: {
+    marginBottom: 20,
   },
-  todoItem: {
+  locationButtonContainer: {
+    marginTop: 8,
+    borderRadius: 8,
+    overflow: 'hidden',
+  },
+  locationText: {
+    marginTop: 8,
+    fontSize: 14,
+    color: '#666',
+    textAlign: 'center',
+    fontStyle: 'italic',
+  },
+  errorText: {
+    color: '#d32f2f',
+    textAlign: 'center',
+    marginTop: 10,
     fontSize: 14,
   },
 });
