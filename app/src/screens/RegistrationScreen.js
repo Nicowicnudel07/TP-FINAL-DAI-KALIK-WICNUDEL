@@ -1,8 +1,8 @@
 import { useState, useContext } from 'react';
-import { StyleSheet, Text, TextInput, View, Alert, TouchableOpacity, ActivityIndicator, Image } from 'react-native';
+import { StyleSheet, Text, TextInput, View, Alert, TouchableOpacity, ActivityIndicator, Image, ScrollView } from 'react-native';
 import { LocationContext } from '../context/LocationContext';
 import { MaterialIcons } from '@expo/vector-icons';
-import GruImage from '../../assets/gru.png';
+import MinionImage from '../../assets/minion.png';
 
 export default function RegistrationScreen() {
   const [name, setName] = useState('');
@@ -54,18 +54,23 @@ export default function RegistrationScreen() {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Image 
-          source={GruImage} 
-          style={styles.avatar} 
-          resizeMode="contain"
-        />
-        <Text style={styles.title}>Registro de Usuario</Text>
-      </View>
-      <Text style={styles.paragraph}>
-        Completa el formulario para registrarte. Necesitaremos acceso a tu ubicación.
-      </Text>
+    <ScrollView 
+      style={styles.scrollView}
+      contentContainerStyle={styles.scrollViewContent}
+      keyboardShouldPersistTaps="handled"
+    >
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <Image 
+            source={MinionImage} 
+            style={styles.avatar} 
+            resizeMode="contain"
+          />
+          <Text style={styles.title}>Bienvenidos a todos</Text>
+        </View>
+        <Text style={styles.paragraph}>
+          Completa el formulario para registrarte. Necesitaremos acceso a tu ubicación.
+        </Text>
 
       <View style={styles.field}>
         <Text style={styles.label}>Nombre</Text>
@@ -157,7 +162,8 @@ export default function RegistrationScreen() {
           {isLoading ? 'Procesando...' : 'Crear mi cuenta'}
         </Text>
       </TouchableOpacity>
-    </View>
+      </View>
+    </ScrollView>
   );
 }
 
@@ -176,10 +182,16 @@ const colors = {
 };
 
 const styles = StyleSheet.create({
-  container: {
+  scrollView: {
     flex: 1,
-    padding: 24,
     backgroundColor: colors.background,
+  },
+  scrollViewContent: {
+    flexGrow: 1,
+  },
+  container: {
+    padding: 24,
+    paddingBottom: 40, // Espacio extra en la parte inferior
   },
   header: {
     alignItems: 'center',
