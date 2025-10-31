@@ -81,6 +81,9 @@ export default function RegistrationScreen() {
   const handleGetLocation = async () => {
     const newLocation = await getLocation();
     if (newLocation) {
+      try {
+        await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+      } catch {}
       Alert.alert(
         'Ubicación obtenida',
         `Latitud: ${newLocation.coords.latitude.toFixed(4)}\nLongitud: ${newLocation.coords.longitude.toFixed(4)}`
@@ -357,6 +360,11 @@ const styles = StyleSheet.create({
     borderColor: colors.primary,
     marginBottom: 16,
     backgroundColor: '#fff',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 10,
+    elevation: 6,
   },
   avatarCaptured: {
     borderColor: colors.success,
@@ -366,9 +374,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: colors.primary,
     paddingHorizontal: 16,
-    paddingVertical: 10,
+    paddingVertical: 12,
     borderRadius: 999,
     gap: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.08,
+    shadowRadius: 8,
+    elevation: 4,
   },
   cameraButtonText: {
     color: '#fff',
@@ -385,7 +398,7 @@ const styles = StyleSheet.create({
   paragraph: {
     fontSize: 16,
     textAlign: 'center',
-    marginBottom: 32,
+    marginBottom: 24,
     color: colors.textLight,
     lineHeight: 24,
     paddingHorizontal: 8,
@@ -401,28 +414,33 @@ const styles = StyleSheet.create({
     marginLeft: 4,
   },
   input: {
-    borderWidth: 1.5,
+    borderWidth: 1,
     borderColor: colors.border,
-    borderRadius: 12,
-    padding: 16,
+    borderRadius: 14,
+    padding: 18,
     fontSize: 16,
     backgroundColor: colors.card,
     color: colors.text,
     shadowColor: colors.primary,
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
-    shadowRadius: 8,
-    elevation: 3,
+    shadowOpacity: 0.08,
+    shadowRadius: 10,
+    elevation: 4,
   },
   inputFocused: {
     borderColor: colors.primaryLight,
-    backgroundColor: '#f8f9ff',
+    backgroundColor: '#eef2ff',
   },
   button: {
-    paddingVertical: 16,
-    borderRadius: 12,
+    paddingVertical: 18,
+    borderRadius: 14,
     backgroundColor: colors.primary,
     marginTop: 16,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.1,
+    shadowRadius: 10,
+    elevation: 5,
   },
   buttonDisabled: {
     opacity: 0.6,
@@ -442,7 +460,9 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.05,
     shadowRadius: 8,
-    elevation: 2,
+    elevation: 3,
+    borderWidth: 1,
+    borderColor: colors.border,
   },
   locationHeader: {
     flexDirection: 'row',
@@ -464,7 +484,7 @@ const styles = StyleSheet.create({
   locationButton: {
     backgroundColor: colors.primary,
     padding: 16,
-    borderRadius: 12,
+    borderRadius: 14,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -493,7 +513,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginTop: 16,
     padding: 12,
-    backgroundColor: 'rgba(67, 97, 238, 0.08)',
+    backgroundColor: 'rgba(67, 97, 238, 0.06)',
     borderRadius: 8,
     gap: 8,
   },
@@ -522,7 +542,7 @@ const styles = StyleSheet.create({
   cameraOverlay: {
     flex: 1,
     justifyContent: 'space-between',
-    paddingTop: 48,
+    paddingTop: 40,
     paddingBottom: 32,
     paddingHorizontal: 24,
   },
@@ -536,7 +556,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 48,
+    gap: 40,
   },
   flipButton: {
     width: 56,
