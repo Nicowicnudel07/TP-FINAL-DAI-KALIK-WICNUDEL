@@ -16,7 +16,8 @@
       "supportsTablet": true,
       "infoPlist": {
         "NSCameraUsageDescription": "Esta app utiliza la cámara para capturar tu foto de perfil.",
-        "NSLocationWhenInUseUsageDescription": "Esta app utiliza tu ubicación para completar el registro y mostrar tu ubicación en el mapa."
+        "NSLocationWhenInUseUsageDescription": "Esta app utiliza tu ubicación para completar el registro y mostrar tu ubicación en el mapa.",
+        "NSUserNotificationUsageDescription": "Enviaremos notificaciones para informarte sobre el estado de tu registro."
       }
     },
     "android": {
@@ -28,7 +29,8 @@
       "permissions": [
         "CAMERA",
         "ACCESS_FINE_LOCATION",
-        "VIBRATE"
+        "VIBRATE",
+        "POST_NOTIFICATIONS"
       ]
     },
     "web": {

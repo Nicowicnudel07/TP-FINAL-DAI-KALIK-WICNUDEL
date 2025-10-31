@@ -1,4 +1,4 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useCallback, useState } from 'react';
 import * as Location from 'expo-location';
 
 export const LocationContext = createContext();
@@ -8,10 +8,11 @@ export const LocationProvider = ({ children }) => {
   const [errorMsg, setErrorMsg] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const getLocation = async () => {
+  const getLocation = useCallback(async () => {
     setIsLoading(true);
+    setErrorMsg(null);
     let { status } = await Location.requestForegroundPermissionsAsync();
-    
+
     if (status !== 'granted') {
       setErrorMsg('Permiso de ubicación denegado');
       setIsLoading(false);
@@ -29,7 +30,7 @@ export const LocationProvider = ({ children }) => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, []);
 
   return (
     <LocationContext.Provider
