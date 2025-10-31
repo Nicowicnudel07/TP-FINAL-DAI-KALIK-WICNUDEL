@@ -81,6 +81,9 @@ export default function RegistrationScreen() {
   const handleGetLocation = async () => {
     const newLocation = await getLocation();
     if (newLocation) {
+      try {
+        await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+      } catch {}
       Alert.alert(
         'Ubicación obtenida',
         `Latitud: ${newLocation.coords.latitude.toFixed(4)}\nLongitud: ${newLocation.coords.longitude.toFixed(4)}`
