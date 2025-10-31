@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
-import { Camera, CameraType } from 'expo-camera';
+import { Camera, CameraType, CameraView } from 'expo-camera';
 import * as Notifications from 'expo-notifications';
 import * as Haptics from 'expo-haptics';
 
@@ -46,7 +46,9 @@ export default function RegistrationScreen() {
   const [cameraVisible, setCameraVisible] = useState(false);
   const [cameraPermission, setCameraPermission] = useState(null);
   const [notificationGranted, setNotificationGranted] = useState(false);
-  const [cameraType, setCameraType] = useState(CameraType.front);
+  const [cameraType, setCameraType] = useState(
+    CameraType?.front ?? Camera?.Constants?.Type?.front ?? 'front'
+  );
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const cameraRef = useRef(null);
@@ -113,9 +115,9 @@ export default function RegistrationScreen() {
   };
 
   const flipCamera = () => {
-    setCameraType((current) => (
-      current === CameraType.back ? CameraType.front : CameraType.back
-    ));
+    const FRONT = CameraType?.front ?? Camera?.Constants?.Type?.front ?? 'front';
+    const BACK = CameraType?.back ?? Camera?.Constants?.Type?.back ?? 'back';
+    setCameraType((current) => (current === BACK ? FRONT : BACK));
   };
 
   const sendFeedbackNotification = async ({ title, body }) => {
@@ -306,7 +308,7 @@ export default function RegistrationScreen() {
 
       <Modal animationType="slide" visible={cameraVisible} onRequestClose={() => setCameraVisible(false)}>
         <View style={styles.cameraContainer}>
-          <Camera ref={cameraRef} style={styles.camera} type={cameraType}>
+          <CameraView ref={cameraRef} style={styles.camera} facing={cameraType}>
             <View style={styles.cameraOverlay}>
               <TouchableOpacity style={styles.closeCameraButton} onPress={() => setCameraVisible(false)}>
                 <MaterialIcons name="close" size={28} color="#fff" />
@@ -320,7 +322,7 @@ export default function RegistrationScreen() {
                 </TouchableOpacity>
               </View>
             </View>
-          </Camera>
+          </CameraView>
         </View>
       </Modal>
     </>
