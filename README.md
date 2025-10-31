@@ -39,7 +39,10 @@ La navegación está resuelta con React Navigation y organiza la experiencia en 
  npm install
 
 # Levantar el proyecto (modo interactivo)
- npm start
+npm start
+
+# O directamente con Expo CLI
+npx expo start
 ```
 
 Expo mostrará un QR para abrir la app en Expo Go (`npx expo start --tunnel` facilita la conexión remota durante la defensa).
