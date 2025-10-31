@@ -62,6 +62,10 @@ export default function RegistrationScreen() {
       if (notificationStatus.status === 'granted' || notificationStatus.status === 'provisional') {
         setNotificationGranted(true);
       }
+
+      try {
+        await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+      } catch {}
     })();
   }, []);
 
